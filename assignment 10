@@ -1,0 +1,76 @@
+public class Node {
+    Object data;
+    Node prev;
+    Node next;
+
+    public Node(Object data) {
+        this.data = data;
+    }
+}
+
+public class DoublyLinkedList {
+    private Node head;
+    private Node tail;
+    private int size;
+
+    public DoublyLinkedList() {
+    }
+
+    public void add(Object data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    public Object[] toArray() {
+        Object[] array = new Object[size];
+        Node current = head;
+        for (int i = 0; i < size; i++) {
+            array[i] = current.data;
+            current = current.next;
+        }
+        return array;
+    }
+
+    public int indexOf(Object data) {
+        Node current = head;
+        int index = 0;
+        while (current != null) {
+            if (current.data.equals(data)) return index;
+            current = current.next;
+            index++;
+        }
+        return -1;
+    }
+
+    public double sumOfLastMElements(int m) {
+        if (m <= 0 || m > size) throw new IllegalArgumentException("Invalid value for m");
+        double sum = 0;
+        Node current = tail;
+        for (int i = 0; i < m; i++) {
+            sum += (double) current.data;
+            current = current.prev;
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        DoublyLinkedList list = new DoublyLinkedList();
+        list.add(1.0); list.add(2.0); list.add(3.0); list.add(4.0); list.add(5.0);
+
+        Object[] array = list.toArray();
+        System.out.println("Array representation of the list:");
+        for (Object obj : array) System.out.print(obj + " ");
+        System.out.println();
+
+        System.out.println("Index of 3.0: " + list.indexOf(3.0));
+
+        System.out.println("Sum of last 3 elements: " + list.sumOfLastMElements(3));
+    }
+}
